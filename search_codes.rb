@@ -16,23 +16,19 @@ class SearchCodes < CptCodes
   def initialize(array)
     @array = array
     @found = []
+    @search = ('diag_codes_1'..'diag_codes_3').to_a
   end
 
   def start_search
-    @array.each do |x|
-      search_diags(x, diag_codes_1)
-      search_diags(x, diag_codes_2)
-      search_diags(x, diag_codes_3)
-    end
+    @search.each { |diag| search_diags(send(diag)) }
     print @found
   end
 
   private
 
-  def search_diags(num, diag_codes)
-    diag_codes.each do |v|
-      (num == v) ? (@found << v) : nil
-    end
+  def search_diags(diag_codes)
+    intersection = @array & diag_codes
+    @found.push(*intersection)
   end
 end
 
